@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# DarkMode 제작하기
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prettier 설정하기
+root폴더에 `.prettierrc`파일을 생성한다.
+```
+{
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "useTabs": false,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "printWidth": 80
+}
+```
 
-## Available Scripts
+## Json파일을 활용하여 import 설정하기
+root폴더에 `jsconfig.json`파일을 생성한다.
+```
+{
+    "compilerOptions": {
+        "target": "es6",
+        "baseUrl": "src"
+    },
+    "include": ["src"]
+}
+```
 
-In the project directory, you can run:
+## src폴더 내에 `index.css`에서 폰트 설정 및 여백 설정을 한다.
+```
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
 
-### `yarn start`
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Black Han Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## src폴더 내에 `theme.js`파일을 만든다.
+```
+export const lightTheme = {
+    bgColor : "#fff",
+    textColor : "#000",
+    headerColor : "#000",
+    headerTextColor : "#fff"
+}
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+export const darkTheme = {
+    bgColor : "#000",
+    textColor : "#fff",
+    headerColor : "#fff",
+    headerTextColor : "#000"
+}
+```
 
-### `yarn test`
+## ThemeProvider를 이용하여 테마를 전체 감싸서 다크모드 효과 적용
+상단에 import
+```javascript
+<ThemeProvider theme={toggle ? darkTheme : lightTheme}>
+      <DarkMode onToggle={onToggle} toggle={toggle}/>
+    </ThemeProvider>
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 스타일컴포넌트 작성 시 태그 이외의 스타일을 적용 시켜줄 때는 소괄호를 사용
+```javascript
+const DarkButton = styled(MdDarkMode)`
+    cursor: pointer;
+    color: ${(props) => props.theme.headerTextColor};
+    font-size: 30px;
+`;
+const LightButton = styled(MdOutlineDarkMode)`
+    cursor: pointer;
+    color: ${(props) => props.theme.headerTextColor};
+    font-size: 30px;
+`;
+```
