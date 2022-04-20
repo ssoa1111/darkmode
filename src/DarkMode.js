@@ -16,7 +16,7 @@ const DarkMode = ({onToggle, toggle}) => {
     return (
         <Container>
             <HeaderWrapper>
-                <h1>HongTeacher</h1>
+                <h1>ssoa1111</h1>
                 {!toggle ? (<DarkButton onClick={onToggle} />) : (<LightButton onClick={onToggle} />)}
             </HeaderWrapper>
             <DateTimer>{time.toLocaleDateString()}</DateTimer>
